@@ -1,0 +1,78 @@
+<% layout('layouts/boilerplate') %>
+
+    <!-- <div class="container "> -->
+    <!-- <h1>
+            <%= item.name %>
+        </h1>
+        <h2>
+            <%= item.price %>
+        </h2>
+        <h3>
+            <%= item.time %>
+        </h3> -->
+
+    <!-- <a href="/products/<%= item._id %>/edit">Edit</a>
+        <p>
+        <form action="/products/<%= item._id %>?_method=DELETE" method="post">
+            <button>Delete</button>
+        </form>
+        </p>
+
+        <a href="/products">All Products</a>
+
+    </div> -->
+
+    <section class="hero">
+        <div class="container">
+            <div class="row justify-content-evenly">
+                <div id="" class="col-md-4 text-center" data-aos="fade-right" data-aos-duration="2000">
+                    <img width="300" height="300" src="/products/<%= item.name %>.png" class="item-show " alt="item">
+                </div>
+                <div class="col-md-5" data-aos-duration="2000" data-aos="fade-left">
+                    <h2 class="">
+                        <%= item.name %>
+                    </h2>
+
+                    <p class="card-text fs-5 "><small class="text-body-secondary">
+                            <%= item.size %>
+                        </small></p>
+
+                    <h4 class="my-3">
+
+                        Precio: $ <%= item.price %>
+
+                    </h4>
+
+                    <div class="text-hero-regular">
+                        <%= item.details %>
+
+                    </div>
+
+                    <div class="text-label">
+                        Servico Incluye:
+                    </div>
+
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"> <i class='bx bx-wifi-0'></i> Revisar, Desmanchar</li>
+                        <li class="list-group-item"> <i class='bx bx-wifi-0'></i> Lavar, Secar</li>
+                        <% if( item.name=='Pantalon' || item.name=='Camiseta' || item.name=='Camisa' ||
+                            item.name=='Vestido' || item.name=='Buzos' ){ %>
+                            <li class="list-group-item"> <i class='bx bx-wifi-0'></i>Planchado a mano</li>
+                            <li class="list-group-item"> <i class='bx bx-wifi-0'></i> Entregado con gancho y plástico
+                            </li>
+                            <%} else{ %>
+                                <li class="list-group-item"> <i class='bx bx-wifi-0'></i> Entregado en bolsa </li>
+                                <% } %>
+
+                    </ul>
+
+                    <div class="text-hero-regular ">
+                        Tiempo aproximado de entrega <%= item.time %>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>

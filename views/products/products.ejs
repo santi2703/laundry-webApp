@@ -1,0 +1,53 @@
+<% layout('layouts/boilerplate') %>
+
+    <!-- <div class="container ">
+        <h1>All products</h1>
+        <a href="/products/new">Add a new item</a>
+       
+
+    </div> -->
+    <section class="item">
+
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos-duration="2000" data-aos="fade-up">
+                Nuestros servicios
+            </h2>
+            <div class="row g-2 ">
+                <% for(product of products){%>
+                    <div class="col">
+
+
+
+                        <div class="card mb-5  " style="width: 18rem;" data-aos-duration="2000" data-aos="fade-up">
+
+                          <a href="/products/<%= product._id %>" class="text-center"><img width="150" height="150" src="/products/<%= product.name %>.png"
+                            class="item text-center" alt="item"></a>  
+
+
+                            <div class="card-body">
+                                <h5 class="card-title text-center fw-medium r">
+                                    <%= product.name %>
+                                </h5>
+
+
+                                <p class="card-text fs-5 "><small class="text-body-secondary">
+                                        <%= product.size %>
+                                    </small></p>
+
+                                
+                                    <button type="button" class="btn btn-secondary " style="font-size: 16px;">$ <%= product.price %></button>
+
+                                    <a href="/products/<%= product._id %>"
+                                        class="btn btn-primary shadow-none" style="font-size: 16px;">Detalles</a>
+                                
+                                <!-- <a href="#" class="btn btn-primary ">Informaciòn</a> -->
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <% } %>
+            </div>
+        </div>
+    </section>
