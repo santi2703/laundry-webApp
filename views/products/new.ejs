@@ -4,7 +4,7 @@
         <div class="row">
             <h1 class="text-center">New Product</h1>
             <div class="col-6 offset-3">
-                <form autocomplete="off" action="/products" method="post"  class="needs-validation" novalidate >
+                <form autocomplete="off" action="/products" method="post"  class="needs-validation"   novalidate  enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label" for="name">Item</label>
                         <input class="form-control" type="text" id="name" name="item[name]" required>
@@ -19,16 +19,20 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="name">Details</label>
-                        <textarea class="form-control" type="text" id="name" name="item[details]"> </textarea>
+                        <label class="form-label" for="details">Details</label>
+                        <textarea class="form-control" type="text" id="details" name="item[details]"> </textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="name">Size</label>
-                        <input class="form-control" type="text" id="name" name="item[size]" required>
+                        <label class="form-label" for="file">Image</label>
+                        <input class="form-control" type="file" id="file" name="image" >
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="name">Time</label>
-                        <input class="form-control" type="text" id="name" name="item[time]" required>
+                        <label class="form-label" for="size">Size</label>
+                        <input class="form-control" type="text" id="size" name="item[size]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="time">Time</label>
+                        <input class="form-control" type="text" id="time" name="item[time]" required>
                     </div>
                     <button class="btn btn-primary">Add item</button>
                     <a href="/products" class="btn btn-secondary shadow-none ">All Products</a>

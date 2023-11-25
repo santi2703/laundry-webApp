@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
 const express = require('express');
 const app = express();
 
@@ -7,16 +11,29 @@ const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const Product = require('./models/products')
 
-const ejsMate = require('ejs-mate')
+const ejsMate = require('ejs-mate') // boilerplate
+
+const multer = require('multer')  // save files 
+const { storage } = require('./cloudinary/index')
+// const upload = multer({ dest: 'uploads/' }); local
+const upload = multer({ storage });
 
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/laundry')
+const dbUrl = process.env.DB_URL
+
+// 'mongodb://127.0.0.1:27017/laundry' local store
+
+
+
+mongoose.connect(dbUrl, {
+   
+})
     .then(() => {
         console.log('Database connected');
     })
     .catch((err) => {
-        console.log('Error');
+        console.log('OH NOO mongo connection error');
         console.log(err);
     })
 
@@ -40,8 +57,13 @@ app.get('/contact', (req, res) => {
 })
 
 app.get('/products', async (req, res) => {
-    const products = await Product.find({});
-    res.render('products/products', { products })
+    try {
+        const products = await Product.find({});
+        res.render('products/products', { products })
+
+    } catch (err) {
+        next(err)
+    }
 
 })
 
@@ -51,9 +73,11 @@ app.get('/products/new', (req, res) => {
     res.render('products/new')
 })
 
-app.post('/products', async (req, res, next) => {
+app.post('/products', upload.single('image'), async (req, res, next) => {
     try {
+        // console.log( req.body, req.file)
         const newitem = new Product(req.body.item)
+        newitem.image = req.file.path
         await newitem.save()
         res.redirect(`/products/${newitem._id}`)
 
@@ -69,29 +93,46 @@ app.get('/products/:id', async (req, res, next) => {
         const { id } = req.params;
         const item = await Product.findById(id)
         res.render('products/show', { item })
+
     } catch (err) {
         next(err)
     }
 })
 
 app.get('/products/:id/edit', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const item = await Product.findById(id)
+        res.render('products/edit', { item })
 
-    const { id } = req.params;
-    const item = await Product.findById(id)
-    res.render('products/edit', { item })
-
+    } catch (err) {
+        next(err)
+    }
 
 })
-app.put('/products/:id', async (req, res) => {
-    const { id } = req.params;
-    const item = await Product.findByIdAndUpdate(id, { ...req.body.item })
-    res.redirect(`/products/${item._id}`)
 
+app.put('/products/:id',  upload.single('image'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const item = await Product.findByIdAndUpdate(id, { ...req.body.item })
+        item.image = req.file.path
+        await item.save();
+        res.redirect(`/products/${item._id}`)
+
+    } catch (err) {
+        next(err)
+    }
 })
 app.delete('/products/:id/edit', async (req, res) => {
-    const { id } = req.params;
-    await Product.findByIdAndDelete(id)
-    res.redirect('/products/')
+    try {
+        const { id } = req.params;
+        const item = await Product.findById(id)
+        await Product.findByIdAndDelete(id)
+        res.redirect('/products/')
+
+    } catch (err) {
+        next(err)
+    }
 
 })
 
