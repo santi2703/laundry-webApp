@@ -20,7 +20,7 @@ const upload = multer({ storage });
 
 
 
-const dbUrl = process.env.DB_URL
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/laundry';
 
 // 'mongodb://127.0.0.1:27017/laundry' local store
 
@@ -150,6 +150,6 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('listening on port 3000');
 })
