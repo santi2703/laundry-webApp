@@ -205,6 +205,13 @@ h5 {
     cursor: default;
 }
 
+p a {
+    /* text-decoration: none; */
+    /* text-decoration: none; */
+    color: var(--gray-1);
+}
+
+
 
 
 /* contact */
