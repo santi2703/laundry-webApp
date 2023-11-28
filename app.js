@@ -15,7 +15,7 @@ const ejsMate = require('ejs-mate') // boilerplate
 
 const multer = require('multer')  // save files 
 const { storage } = require('./cloudinary/index')
-// const upload = multer({ dest: 'uploads/' }); local
+// const upload = multer({ dest: 'uploads/' }); //local
 const upload = multer({ storage });
 
 
@@ -78,7 +78,9 @@ app.post('/products', upload.single('image'), async (req, res, next) => {
         // console.log( req.body, req.file)
         const newitem = new Product(req.body.item)
         newitem.image = req.file.path
+        console.log(req.file)
         await newitem.save()
+       
         res.redirect(`/products/${newitem._id}`)
 
     } catch (err) {
@@ -111,7 +113,7 @@ app.get('/products/:id/edit', async (req, res) => {
 
 })
 
-app.put('/products/:id',  upload.single('image'), async (req, res) => {
+app.put('/products/:id',  upload.single('image'), async (req, res, next) => {
     try {
         const { id } = req.params;
         const item = await Product.findByIdAndUpdate(id, { ...req.body.item })
@@ -121,6 +123,7 @@ app.put('/products/:id',  upload.single('image'), async (req, res) => {
 
     } catch (err) {
         next(err)
+        console.log(err)
     }
 })
 app.delete('/products/:id/edit', async (req, res) => {
