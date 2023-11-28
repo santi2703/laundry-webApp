@@ -27,7 +27,7 @@ const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/laundry';
 
 
 mongoose.connect(dbUrl, {
-   
+
 })
     .then(() => {
         console.log('Database connected');
@@ -80,7 +80,7 @@ app.post('/products', upload.single('image'), async (req, res, next) => {
         newitem.image = req.file.path
         console.log(req.file)
         await newitem.save()
-       
+
         res.redirect(`/products/${newitem._id}`)
 
     } catch (err) {
@@ -113,13 +113,15 @@ app.get('/products/:id/edit', async (req, res) => {
 
 })
 
-app.put('/products/:id',  upload.single('image'), async (req, res, next) => {
+app.put('/products/:id', upload.single('image'), async (req, res, next) => {
     try {
         const { id } = req.params;
         const item = await Product.findByIdAndUpdate(id, { ...req.body.item })
-        item.image = req.file.path
-        await item.save();
-        res.redirect(`/products/${item._id}`)
+        if(req.file) {
+            item.image = req.file.path
+            await item.save();
+        } else {res.redirect(`/products/${item._id}`)}
+    
 
     } catch (err) {
         next(err)
@@ -148,7 +150,6 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
     res.render('error')
 })
-
 
 
 
