@@ -48,6 +48,15 @@ app.use(express.static(path.join(__dirname, '/public')))
 app.engine('ejs', ejsMate)
 
 
+function hasAccess(req, res, next) {
+    const accessKey = req.query.key;
+    if(accessKey == process.env.HAS_ACCESS) {
+        return next();
+    }
+    res.render('error')
+}
+
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -56,7 +65,7 @@ app.get('/contact', (req, res) => {
     res.render('contact')
 })
 
-app.get('/products', async (req, res) => {
+app.get('/products', async (req, res, next) => {
     try {
         const products = await Product.find({});
         res.render('products/products', { products })
@@ -68,7 +77,7 @@ app.get('/products', async (req, res) => {
 })
 
 
-app.get('/products/new', (req, res) => {
+app.get('/products/new', hasAccess, (req, res) => {
 
     res.render('products/new')
 })
@@ -101,7 +110,7 @@ app.get('/products/:id', async (req, res, next) => {
     }
 })
 
-app.get('/products/:id/edit', async (req, res) => {
+app.get('/products/:id/edit', hasAccess,  async (req, res,  next) => {
     try {
         const { id } = req.params;
         const item = await Product.findById(id)
@@ -128,7 +137,7 @@ app.put('/products/:id', upload.single('image'), async (req, res, next) => {
         console.log(err)
     }
 })
-app.delete('/products/:id/edit', async (req, res) => {
+app.delete('/products/:id/edit', async (req, res, next) => {
     try {
         const { id } = req.params;
         const item = await Product.findById(id)
